@@ -1,925 +1,280 @@
 <!DOCTYPE html>
-
 <html lang="ko">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>마법소녀 프로필 편집기</title>
+    <title>마법소녀 프로필 (수정 가능)</title>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&display=swap');
-
-```
-    * {
-        margin: 0;
-        padding: 0;
-        box-sizing: border-box;
-    }
-    
-    body {
-        font-family: 'Courier New', 'Orbitron', monospace;
-        background: #0a0a0a;
-        color: #e0e0e0;
-        line-height: 1.4;
-        padding: 20px;
-        background-image: 
-            radial-gradient(circle at 25% 25%, #111 1px, transparent 1px),
-            radial-gradient(circle at 75% 75%, #111 1px, transparent 1px);
-        background-size: 20px 20px;
-        min-height: 100vh;
-    }
-    
-    .container {
-        max-width: 900px;
-        margin: 0 auto;
-        background: #1a1a1a;
-        border: 3px solid #333;
-        box-shadow: 
-            0 0 0 1px #666,
-            inset 0 0 0 1px #000,
-            0 0 20px rgba(255,255,255,0.1);
-        position: relative;
-    }
-    
-    .container::before {
-        content: '';
-        position: absolute;
-        top: -3px;
-        left: -3px;
-        right: -3px;
-        bottom: -3px;
-        background: linear-gradient(45deg, #444, #222, #444, #222);
-        z-index: -1;
-    }
-    
-    .header {
-        background: #000;
-        border-bottom: 2px solid #333;
-        padding: 15px 20px;
-        text-align: center;
-        position: relative;
-    }
-    
-    .header::after {
-        content: '';
-        position: absolute;
-        bottom: -2px;
-        left: 0;
-        right: 0;
-        height: 2px;
-        background: linear-gradient(90deg, transparent, #666, transparent);
-    }
-    
-    .title {
-        font-size: 24px;
-        font-weight: 900;
-        letter-spacing: 3px;
-        text-transform: uppercase;
-        color: #fff;
-        text-shadow: 2px 2px 0 #000, -1px -1px 0 #333;
-    }
-    
-    .subtitle {
-        font-size: 12px;
-        color: #888;
-        margin-top: 5px;
-        letter-spacing: 2px;
-    }
-    
-    .controls {
-        background: #222;
-        border-bottom: 1px solid #333;
-        padding: 10px 20px;
-        display: flex;
-        justify-content: center;
-        gap: 10px;
-    }
-    
-    .btn {
-        background: #333;
-        border: 2px solid #555;
-        color: #ccc;
-        padding: 8px 16px;
-        font-family: inherit;
-        font-size: 12px;
-        text-transform: uppercase;
-        letter-spacing: 1px;
-        cursor: pointer;
-        transition: all 0.2s;
-    }
-    
-    .btn:hover {
-        background: #444;
-        border-color: #777;
-        color: #fff;
-    }
-    
-    .btn:active {
-        background: #222;
-    }
-    
-    .content {
-        display: grid;
-        grid-template-columns: 1fr 1fr;
-        gap: 20px;
-        padding: 20px;
-    }
-    
-    .profile-section {
-        grid-column: 1 / -1;
-        display: grid;
-        grid-template-columns: 220px 1fr;
-        gap: 20px;
-        margin-bottom: 10px;
-    }
-    
-    .profile-image-container {
-        position: relative;
-    }
-    
-    .profile-image {
-        width: 220px;
-        height: 220px;
-        border: 3px solid #333;
-        background: #111;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        position: relative;
-        box-shadow: inset 0 0 10px rgba(0,0,0,0.5);
-        cursor: pointer;
-        overflow: hidden;
-    }
-    
-    .profile-image:hover {
-        border-color: #555;
-    }
-    
-    .profile-image::before {
-        content: '📷\ACLICK TO UPLOAD';
-        font-size: 32px;
-        opacity: 0.4;
-        text-align: center;
-        white-space: pre;
-        line-height: 1.2;
-    }
-    
-    .profile-image img {
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
-        filter: contrast(1.2) grayscale(0.8);
-    }
-    
-    .profile-image input[type="file"] {
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        opacity: 0;
-        cursor: pointer;
-    }
-    
-    .remove-image {
-        position: absolute;
-        top: 5px;
-        right: 5px;
-        background: #ff0000;
-        color: white;
-        border: none;
-        width: 20px;
-        height: 20px;
-        font-size: 12px;
-        cursor: pointer;
-        display: none;
-    }
-    
-    .basic-info {
-        background: #111;
-        border: 2px solid #333;
-        padding: 15px;
-    }
-    
-    .info-row {
-        display: flex;
-        margin-bottom: 8px;
-        font-size: 14px;
-        align-items: center;
-    }
-    
-    .info-label {
-        width: 80px;
-        color: #aaa;
-        font-weight: bold;
-    }
-    
-    .info-value {
-        color: #fff;
-        flex: 1;
-    }
-    
-    .section {
-        background: #111;
-        border: 2px solid #333;
-        margin-bottom: 20px;
-    }
-    
-    .section-header {
-        background: #222;
-        border-bottom: 1px solid #333;
-        padding: 10px 15px;
-        font-size: 14px;
-        font-weight: bold;
-        text-transform: uppercase;
-        letter-spacing: 1px;
-        color: #ccc;
-    }
-    
-    .section-content {
-        padding: 15px;
-    }
-    
-    .stats-grid {
-        display: grid;
-        grid-template-columns: 1fr 1fr;
-        gap: 15px;
-    }
-    
-    .stat-item {
-        margin-bottom: 15px;
-    }
-    
-    .stat-header {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        margin-bottom: 5px;
-    }
-    
-    .stat-label {
-        font-size: 12px;
-        color: #aaa;
-        text-transform: uppercase;
-        letter-spacing: 1px;
-    }
-    
-    .stat-input {
-        background: transparent;
-        border: 1px solid #444;
-        color: #fff;
-        width: 50px;
-        text-align: center;
-        font-family: inherit;
-        font-size: 10px;
-        padding: 2px;
-    }
-    
-    .stat-input:focus {
-        outline: none;
-        border-color: #777;
-        background: #222;
-    }
-    
-    .stat-bar {
-        background: #000;
-        border: 1px solid #333;
-        height: 20px;
-        position: relative;
-        box-shadow: inset 0 0 5px rgba(0,0,0,0.5);
-    }
-    
-    .stat-fill {
-        background: linear-gradient(90deg, #333, #666, #333);
-        height: 100%;
-        position: relative;
-        transition: width 0.3s ease;
-    }
-    
-    .stat-fill::after {
-        content: '';
-        position: absolute;
-        top: 0;
-        left: 0;
-        right: 0;
-        bottom: 0;
-        background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent);
-    }
-    
-    .stat-value {
-        position: absolute;
-        right: 5px;
-        top: 50%;
-        transform: translateY(-50%);
-        font-size: 10px;
-        font-weight: bold;
-        color: #fff;
-        text-shadow: 1px 1px 0 #000;
-    }
-    
-    .description {
-        font-size: 13px;
-        line-height: 1.6;
-        color: #ccc;
-    }
-    
-    .magic-theme {
-        margin-top: 15px;
-    }
-    
-    .theme-tags {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 8px;
-        margin-bottom: 10px;
-    }
-    
-    .theme-tag {
-        background: #222;
-        border: 1px solid #444;
-        padding: 4px 8px;
-        font-size: 11px;
-        text-transform: uppercase;
-        letter-spacing: 1px;
-        color: #aaa;
-        position: relative;
-        cursor: pointer;
-    }
-    
-    .theme-tag:hover {
-        background: #333;
-        border-color: #555;
-    }
-    
-    .theme-tag .remove-tag {
-        position: absolute;
-        top: -5px;
-        right: -5px;
-        background: #ff0000;
-        color: white;
-        border: none;
-        width: 15px;
-        height: 15px;
-        font-size: 10px;
-        border-radius: 50%;
-        cursor: pointer;
-        display: none;
-    }
-    
-    .theme-tag:hover .remove-tag {
-        display: block;
-    }
-    
-    .add-tag {
-        display: flex;
-        gap: 5px;
-        align-items: center;
-    }
-    
-    .tag-input {
-        background: transparent;
-        border: 1px dashed #555;
-        color: #ccc;
-        padding: 4px 8px;
-        font-family: inherit;
-        font-size: 11px;
-        text-transform: uppercase;
-    }
-    
-    .tag-input:focus {
-        outline: none;
-        border-color: #777;
-        background: #222;
-    }
-    
-    .editable {
-        background: transparent;
-        border: 1px dashed #555;
-        color: #ccc;
-        padding: 2px 4px;
-        font-family: inherit;
-        font-size: inherit;
-        width: 100%;
-    }
-    
-    .editable:focus {
-        outline: none;
-        border-color: #777;
-        background: #222;
-    }
-    
-    textarea.editable {
-        min-height: 100px;
-        resize: vertical;
-    }
-    
-    .glitch {
-        position: relative;
-        animation: glitch 3s infinite;
-    }
-    
-    @keyframes glitch {
-        0%, 100% { transform: translate(0); }
-        20% { transform: translate(-1px, 1px); }
-        40% { transform: translate(-1px, -1px); }
-        60% { transform: translate(1px, 1px); }
-        80% { transform: translate(1px, -1px); }
-    }
-    
-    .notification {
-        position: fixed;
-        top: 20px;
-        right: 20px;
-        background: #222;
-        border: 2px solid #555;
-        color: #fff;
-        padding: 10px 15px;
-        font-size: 12px;
-        opacity: 0;
-        transition: opacity 0.3s;
-        z-index: 1000;
-    }
-    
-    .notification.show {
-        opacity: 1;
-    }
-    
-    .export-overlay {
-        position: fixed;
-        top: 0;
-        left: 0;
-        right: 0;
-        bottom: 0;
-        background: rgba(0,0,0,0.8);
-        display: none;
-        align-items: center;
-        justify-content: center;
-        z-index: 2000;
-    }
-    
-    .export-dialog {
-        background: #1a1a1a;
-        border: 3px solid #333;
-        padding: 20px;
-        text-align: center;
-        box-shadow: 0 0 20px rgba(255,255,255,0.1);
-    }
-    
-    .loading-spinner {
-        width: 40px;
-        height: 40px;
-        border: 3px solid #333;
-        border-top: 3px solid #666;
-        border-radius: 50%;
-        animation: spin 1s linear infinite;
-        margin: 0 auto 15px;
-    }
-    
-    @keyframes spin {
-        0% { transform: rotate(0deg); }
-        100% { transform: rotate(360deg); }
-    }
-</style>
-```
-
+        /* --- 기존 CSS 코드는 여기에 붙여넣으세요 --- */
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Courier New', 'Orbitron', monospace; background: #0a0a0a; color: #e0e0e0; line-height: 1.4; padding: 20px; background-image: radial-gradient(circle at 25% 25%, #111 1px, transparent 1px), radial-gradient(circle at 75% 75%, #111 1px, transparent 1px); background-size: 20px 20px; min-height: 100vh; }
+        .container { max-width: 800px; margin: 0 auto; background: #1a1a1a; border: 3px solid #333; box-shadow: 0 0 0 1px #666, inset 0 0 0 1px #000, 0 0 20px rgba(255,255,255,0.1); position: relative; }
+        .container::before { content: ''; position: absolute; top: -3px; left: -3px; right: -3px; bottom: -3px; background: linear-gradient(45deg, #444, #222, #444, #222); z-index: -1; }
+        .header { background: #000; border-bottom: 2px solid #333; padding: 15px 20px; text-align: center; position: relative; }
+        .header::after { content: ''; position: absolute; bottom: -2px; left: 0; right: 0; height: 2px; background: linear-gradient(90deg, transparent, #666, transparent); }
+        .title { font-size: 24px; font-weight: 900; letter-spacing: 3px; text-transform: uppercase; color: #fff; text-shadow: 2px 2px 0 #000, -1px -1px 0 #333; }
+        .subtitle { font-size: 12px; color: #888; margin-top: 5px; letter-spacing: 2px; }
+        .content { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; padding: 20px; }
+        .profile-section { grid-column: 1 / -1; display: grid; grid-template-columns: 200px 1fr; gap: 20px; margin-bottom: 10px; }
+        .profile-image { width: 200px; height: 200px; border: 3px solid #333; background: #111; display: flex; align-items: center; justify-content: center; position: relative; box-shadow: inset 0 0 10px rgba(0,0,0,0.5); cursor: pointer; overflow: hidden; }
+        .profile-image::before { content: '📷'; font-size: 48px; opacity: 0.3; position: absolute; }
+        .profile-image img { width: 100%; height: 100%; object-fit: cover; filter: contrast(1.2) grayscale(0.8); position: relative; z-index: 1; }
+        .basic-info { background: #111; border: 2px solid #333; padding: 15px; }
+        .info-row { display: flex; align-items: center; margin-bottom: 8px; font-size: 14px; }
+        .info-label { width: 80px; color: #aaa; font-weight: bold; flex-shrink: 0; }
+        .info-value { color: #fff; flex: 1; }
+        .section { background: #111; border: 2px solid #333; margin-bottom: 20px; }
+        .section-header { background: #222; border-bottom: 1px solid #333; padding: 10px 15px; font-size: 14px; font-weight: bold; text-transform: uppercase; letter-spacing: 1px; color: #ccc; }
+        .section-content { padding: 15px; }
+        .stats-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
+        .stat-item { margin-bottom: 10px; }
+        .stat-label { font-size: 12px; color: #aaa; margin-bottom: 5px; text-transform: uppercase; letter-spacing: 1px; display: flex; justify-content: space-between; align-items: center; }
+        .stat-bar { background: #000; border: 1px solid #333; height: 20px; position: relative; box-shadow: inset 0 0 5px rgba(0,0,0,0.5); }
+        .stat-fill { background: linear-gradient(90deg, #333, #666, #333); height: 100%; position: relative; transition: width 0.3s ease; }
+        .stat-fill::after { content: ''; position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent); }
+        .stat-value { position: absolute; right: 5px; top: 50%; transform: translateY(-50%); font-size: 10px; font-weight: bold; color: #fff; text-shadow: 1px 1px 0 #000; }
+        .description { font-size: 13px; line-height: 1.6; color: #ccc; }
+        .magic-theme { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 10px; min-height: 25px;}
+        .theme-tag { background: #222; border: 1px solid #444; padding: 4px 8px; font-size: 11px; text-transform: uppercase; letter-spacing: 1px; color: #aaa; }
+        .editable { background: transparent; border: 1px dashed #555; color: #ccc; padding: 2px 4px; font-family: inherit; font-size: inherit; width: 100%; }
+        .editable:focus { outline: none; border-color: #777; background: #222; }
+        textarea.editable { width: 100%; min-height: 80px; resize: vertical; }
+        .stat-input { width: 60px !important; text-align: center; background: #000; border: 1px solid #333; }
+        .button-container { grid-column: 1 / -1; display: flex; gap: 10px; justify-content: flex-end; }
+        .button { background: #222; border: 1px solid #444; color: #ccc; padding: 8px 15px; cursor: pointer; text-transform: uppercase; font-family: 'Orbitron', monospace; letter-spacing: 1px; font-size: 12px; transition: all 0.2s; }
+        .button:hover { background: #333; color: #fff; border-color: #666; }
+        .glitch { position: relative; animation: glitch 3s infinite; }
+        @keyframes glitch { 0%, 100% { transform: translate(0); } 20% { transform: translate(-1px, 1px); } 40% { transform: translate(-1px, -1px); } 60% { transform: translate(1px, 1px); } 80% { transform: translate(1px, -1px); } }
+    </style>
 </head>
 <body>
-    <div class="notification" id="notification"></div>
+    <div class="container">
+        <div class="header">
+            <div class="title glitch">MAGICAL GIRL</div>
+            <div class="subtitle">PROFILE DATABASE</div>
+        </div>
 
-```
-<div class="export-overlay" id="exportOverlay">
-    <div class="export-dialog">
-        <div class="loading-spinner"></div>
-        <div>이미지를 생성하고 있습니다...</div>
-    </div>
-</div>
-
-<div class="container">
-    <div class="header">
-        <div class="title glitch">MAGICAL GIRL</div>
-        <div class="subtitle">PROFILE DATABASE - EDITOR</div>
-    </div>
-    
-    <div class="controls">
-        <button class="btn" onclick="saveProfile()">저장</button>
-        <button class="btn" onclick="loadProfile()">불러오기</button>
-        <button class="btn" onclick="resetProfile()">초기화</button>
-        <button class="btn" onclick="exportProfile()">JSON 내보내기</button>
-        <button class="btn" onclick="exportAsImage()">이미지 내보내기</button>
-    </div>
-    
-    <div class="content">
-        <div class="profile-section">
-            <div class="profile-image-container">
-                <div class="profile-image" id="profileImage">
-                    <input type="file" id="imageUpload" accept="image/*">
+        <div class="content">
+            <div class="profile-section">
+                <div class="profile-image" id="profile-image-container">
+                    <img id="profile-img" src="" alt="">
                 </div>
-                <button class="remove-image" id="removeImage" onclick="removeProfileImage()">×</button>
+                <input type="file" id="image-upload" accept="image/*" style="display: none;">
+                
+                <div class="basic-info">
+                    <div class="section-header">기본 정보</div>
+                    <div class="section-content">
+                        <div class="info-row">
+                            <span class="info-label">이름:</span>
+                            <input type="text" id="char-name" class="editable info-value" placeholder="마법소녀 이름">
+                        </div>
+                        <div class="info-row">
+                            <span class="info-label">나이:</span>
+                            <input type="text" id="char-age" class="editable info-value" placeholder="16">
+                        </div>
+                        <div class="info-row">
+                            <span class="info-label">등급:</span>
+                            <input type="text" id="char-rank" class="editable info-value" placeholder="S급">
+                        </div>
+                        <div class="info-row">
+                            <span class="info-label">소속:</span>
+                            <input type="text" id="char-faction" class="editable info-value" placeholder="마법소녀 연합">
+                        </div>
+                        <div class="info-row">
+                            <span class="info-label">계약일:</span>
+                            <input type="text" id="char-contract-date" class="editable info-value" placeholder="2024.03.15">
+                        </div>
+                    </div>
+                </div>
             </div>
             
-            <div class="basic-info">
-                <div class="section-header">기본 정보</div>
+            <div class="section">
+                <div class="section-header">능력치</div>
+                <div class="section-content">
+                    <div class="stats-grid">
+                        <div class="stat-item">
+                            <div class="stat-label"><span>마법소녀 적성</span><input type="number" id="stat-aptitude" class="editable stat-input" value="85" min="0" max="100"></div>
+                            <div class="stat-bar"><div id="stat-aptitude-fill" class="stat-fill"></div><div id="stat-aptitude-value" class="stat-value"></div></div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-label"><span>공격력</span><input type="number" id="stat-attack" class="editable stat-input" value="70" min="0" max="100"></div>
+                            <div class="stat-bar"><div id="stat-attack-fill" class="stat-fill"></div><div id="stat-attack-value" class="stat-value"></div></div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-label"><span>방어력</span><input type="number" id="stat-defense" class="editable stat-input" value="60" min="0" max="100"></div>
+                            <div class="stat-bar"><div id="stat-defense-fill" class="stat-fill"></div><div id="stat-defense-value" class="stat-value"></div></div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-label"><span>마나 효율</span><input type="number" id="stat-mana" class="editable stat-input" value="90" min="0" max="100"></div>
+                            <div class="stat-bar"><div id="stat-mana-fill" class="stat-fill"></div><div id="stat-mana-value" class="stat-value"></div></div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-label"><span>민첩성</span><input type="number" id="stat-agility" class="editable stat-input" value="75" min="0" max="100"></div>
+                            <div class="stat-bar"><div id="stat-agility-fill" class="stat-fill"></div><div id="stat-agility-value" class="stat-value"></div></div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-label"><span>정신력</span><input type="number" id="stat-spirit" class="editable stat-input" value="95" min="0" max="100"></div>
+                            <div class="stat-bar"><div id="stat-spirit-fill" class="stat-fill"></div><div id="stat-spirit-value" class="stat-value"></div></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="section">
+                <div class="section-header">마법 & 테마</div>
                 <div class="section-content">
                     <div class="info-row">
-                        <span class="info-label">이름:</span>
-                        <input type="text" class="editable info-value" id="name" value="사쿠라 미즈키">
+                        <span class="info-label">주 속성:</span>
+                        <input type="text" id="magic-attribute" class="editable info-value" placeholder="빛/치유">
                     </div>
                     <div class="info-row">
-                        <span class="info-label">나이:</span>
-                        <input type="text" class="editable info-value" id="age" value="16">
+                        <span class="info-label">무기:</span>
+                        <input type="text" id="magic-weapon" class="editable info-value" placeholder="크리스털 스태프">
                     </div>
                     <div class="info-row">
-                        <span class="info-label">등급:</span>
-                        <input type="text" class="editable info-value" id="rank" value="S급">
+                        <span class="info-label">테마 태그:</span>
+                        <input type="text" id="theme-tags-input" class="editable info-value" placeholder="쉼표(,)로 태그 구분" value="HEALING, LIGHT MAGIC, BARRIER, PURIFICATION">
                     </div>
-                    <div class="info-row">
-                        <span class="info-label">소속:</span>
-                        <input type="text" class="editable info-value" id="affiliation" value="달빛 마법소녀 연합">
-                    </div>
-                    <div class="info-row">
-                        <span class="info-label">계약일:</span>
-                        <input type="date" class="editable info-value" id="contractDate" value="2024-03-15">
-                    </div>
+                    <div id="theme-tags-output" class="magic-theme">
+                        </div>
                 </div>
             </div>
-        </div>
-        
-        <div class="section">
-            <div class="section-header">능력치</div>
-            <div class="section-content">
-                <div class="stats-grid">
-                    <div class="stat-item">
-                        <div class="stat-header">
-                            <div class="stat-label">마법소녀 적성</div>
-                            <input type="number" class="stat-input" min="0" max="100" value="85" onchange="updateStat(this, 'aptitude')">
-                        </div>
-                        <div class="stat-bar">
-                            <div class="stat-fill" id="aptitude-fill" style="width: 85%"></div>
-                            <div class="stat-value" id="aptitude-value">85/100</div>
-                        </div>
-                    </div>
-                    <div class="stat-item">
-                        <div class="stat-header">
-                            <div class="stat-label">공격력</div>
-                            <input type="number" class="stat-input" min="0" max="100" value="70" onchange="updateStat(this, 'attack')">
-                        </div>
-                        <div class="stat-bar">
-                            <div class="stat-fill" id="attack-fill" style="width: 70%"></div>
-                            <div class="stat-value" id="attack-value">70/100</div>
-                        </div>
-                    </div>
-                    <div class="stat-item">
-                        <div class="stat-header">
-                            <div class="stat-label">방어력</div>
-                            <input type="number" class="stat-input" min="0" max="100" value="60" onchange="updateStat(this, 'defense')">
-                        </div>
-                        <div class="stat-bar">
-                            <div class="stat-fill" id="defense-fill" style="width: 60%"></div>
-                            <div class="stat-value" id="defense-value">60/100</div>
-                        </div>
-                    </div>
-                    <div class="stat-item">
-                        <div class="stat-header">
-                            <div class="stat-label">마나 효율</div>
-                            <input type="number" class="stat-input" min="0" max="100" value="90" onchange="updateStat(this, 'mana')">
-                        </div>
-                        <div class="stat-bar">
-                            <div class="stat-fill" id="mana-fill" style="width: 90%"></div>
-                            <div class="stat-value" id="mana-value">90/100</div>
-                        </div>
-                    </div>
-                    <div class="stat-item">
-                        <div class="stat-header">
-                            <div class="stat-label">민첩성</div>
-                            <input type="number" class="stat-input" min="0" max="100" value="75" onchange="updateStat(this, 'agility')">
-                        </div>
-                        <div class="stat-bar">
-                            <div class="stat-fill" id="agility-fill" style="width: 75%"></div>
-                            <div class="stat-value" id="agility-value">75/100</div>
-                        </div>
-                    </div>
-                    <div class="stat-item">
-                        <div class="stat-header">
-                            <div class="stat-label">정신력</div>
-                            <input type="number" class="stat-input" min="0" max="100" value="95" onchange="updateStat(this, 'mental')">
-                        </div>
-                        <div class="stat-bar">
-                            <div class="stat-fill" id="mental-fill" style="width: 95%"></div>
-                            <div class="stat-value" id="mental-value">95/100</div>
-                        </div>
-                    </div>
+            
+            <div class="section" style="grid-column: 1 / -1;">
+                <div class="section-header">해석 & 설명</div>
+                <div class="section-content">
+                    <textarea id="char-description" class="editable description" placeholder="마법소녀의 능력, 성격, 전투 스타일에 대한 상세한 분석과 설명을 입력하세요."></textarea>
                 </div>
             </div>
-        </div>
-        
-        <div class="section">
-            <div class="section-header">마법 & 테마</div>
-            <div class="section-content">
-                <div class="info-row">
-                    <span class="info-label">주 속성:</span>
-                    <input type="text" class="editable info-value" id="mainAttribute" value="빛/치유">
-                </div>
-                <div class="info-row">
-                    <span class="info-label">무기:</span>
-                    <input type="text" class="editable info-value" id="weapon" value="문라이트 크리스털 스태프">
-                </div>
-                <div class="magic-theme">
-                    <div class="theme-tags" id="themeTags">
-                        <div class="theme-tag">HEALING<button class="remove-tag" onclick="removeTag(this)">×</button></div>
-                        <div class="theme-tag">LIGHT MAGIC<button class="remove-tag" onclick="removeTag(this)">×</button></div>
-                        <div class="theme-tag">BARRIER<button class="remove-tag" onclick="removeTag(this)">×</button></div>
-                        <div class="theme-tag">PURIFICATION<button class="remove-tag" onclick="removeTag(this)">×</button></div>
-                    </div>
-                    <div class="add-tag">
-                        <input type="text" class="tag-input" id="newTag" placeholder="새 태그" onkeypress="handleTagEnter(event)">
-                        <button class="btn" onclick="addTag()">추가</button>
-                    </div>
-                </div>
+
+            <div class="button-container">
+                <button id="save-button" class="button">저장</button>
+                <button id="reset-button" class="button">초기화</button>
             </div>
         </div>
-        
-        <div class="section" style="grid-column: 1 / -1;">
-            <div class="section-header">해석 & 설명</div>
-            <div class="section-content">
-                <textarea class="editable description" id="description">뛰어난 치유 능력과 방어 마법에 특화된 서포트형 마법소녀입니다.
-```
+    </div>
+  
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const stats = ['aptitude', 'attack', 'defense', 'mana', 'agility', 'spirit'];
 
-높은 정신력으로 어려운 상황에서도 냉정함을 유지하며, 팀원들을 보호하는 것을 최우선으로 하는 희생적 성격을 가지고 있습니다.
+            // 1. 능력치 업데이트 함수
+            function updateStat(statName) {
+                const input = document.getElementById(`stat-${statName}`);
+                const fill = document.getElementById(`stat-${statName}-fill`);
+                const valueText = document.getElementById(`stat-${statName}-value`);
+                let value = parseInt(input.value, 10);
+                if (isNaN(value) || value < 0) value = 0;
+                if (value > 100) value = 100;
+                
+                fill.style.width = value + '%';
+                valueText.textContent = `${value}/100`;
+            }
 
-빛의 마법으로 적의 어둠을 정화하는 특별한 능력을 보유하고 있으며, 달빛 아래에서 마법 효율이 크게 증가합니다.
+            // 2. 테마 태그 업데이트 함수
+            function updateThemeTags() {
+                const input = document.getElementById('theme-tags-input');
+                const output = document.getElementById('theme-tags-output');
+                output.innerHTML = '';
+                const tags = input.value.split(',')
+                    .map(tag => tag.trim())
+                    .filter(tag => tag.length > 0);
+                
+                tags.forEach(tagText => {
+                    const tagElement = document.createElement('span');
+                    tagElement.className = 'theme-tag';
+                    tagElement.textContent = tagText;
+                    output.appendChild(tagElement);
+                });
+            }
 
-전투 스타일은 직접적인 공격보다는 아군 지원과 적 무력화에 중점을 두고 있으며, 크리스털 스태프를 통해 강력한 치유 마법과 방어막을 전개할 수 있습니다.</textarea>
-</div>
-</div>
-</div>
-</div>
+            // 3. 프로필 이미지 로드
+            const imageContainer = document.getElementById('profile-image-container');
+            const imageUpload = document.getElementById('image-upload');
+            const profileImg = document.getElementById('profile-img');
 
-```
-<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
-<script>
-    let profileData = {};
-
-    // 이미지 업로드 처리
-    document.getElementById('imageUpload').addEventListener('change', function(e) {
-        const file = e.target.files[0];
-        if (file) {
-            const reader = new FileReader();
-            reader.onload = function(e) {
-                const img = document.createElement('img');
-                img.src = e.target.result;
-                const container = document.getElementById('profileImage');
-                container.innerHTML = '';
-                container.appendChild(img);
-                container.appendChild(document.getElementById('imageUpload'));
-                document.getElementById('removeImage').style.display = 'block';
-            };
-            reader.readAsDataURL(file);
-        }
-    });
-
-    // 이미지 제거
-    function removeProfileImage() {
-        const container = document.getElementById('profileImage');
-        container.innerHTML = '<input type="file" id="imageUpload" accept="image/*">';
-        document.getElementById('removeImage').style.display = 'none';
-        // 이벤트 리스너 재등록
-        document.getElementById('imageUpload').addEventListener('change', arguments.callee);
-    }
-
-    // 스탯 업데이트
-    function updateStat(input, statName) {
-        const value = parseInt(input.value);
-        const percentage = Math.min(100, Math.max(0, value));
-        
-        document.getElementById(statName + '-fill').style.width = percentage + '%';
-        document.getElementById(statName + '-value').textContent = percentage + '/100';
-        
-        input.value = percentage;
-    }
-
-    // 태그 추가
-    function addTag() {
-        const input = document.getElementById('newTag');
-        const tagText = input.value.trim().toUpperCase();
-        
-        if (tagText) {
-            const tagContainer = document.getElementById('themeTags');
-            const tagElement = document.createElement('div');
-            tagElement.className = 'theme-tag';
-            tagElement.innerHTML = tagText + '<button class="remove-tag" onclick="removeTag(this)">×</button>';
-            tagContainer.appendChild(tagElement);
-            input.value = '';
-        }
-    }
-
-    // 태그 제거
-    function removeTag(button) {
-        button.parentElement.remove();
-    }
-
-    // Enter 키로 태그 추가
-    function handleTagEnter(event) {
-        if (event.key === 'Enter') {
-            addTag();
-        }
-    }
-
-    // 프로필 저장 (메모리에)
-    function saveProfile() {
-        profileData = {
-            name: document.getElementById('name').value,
-            age: document.getElementById('age').value,
-            rank: document.getElementById('rank').value,
-            affiliation: document.getElementById('affiliation').value,
-            contractDate: document.getElementById('contractDate').value,
-            mainAttribute: document.getElementById('mainAttribute').value,
-            weapon: document.getElementById('weapon').value,
-            description: document.getElementById('description').value,
-            stats: {
-                aptitude: document.querySelector('[onchange="updateStat(this, \'aptitude\')"]').value,
-                attack: document.querySelector('[onchange="updateStat(this, \'attack\')"]').value,
-                defense: document.querySelector('[onchange="updateStat(this, \'defense\')"]').value,
-                mana: document.querySelector('[onchange="updateStat(this, \'mana\')"]').value,
-                agility: document.querySelector('[onchange="updateStat(this, \'agility\')"]').value,
-                mental: document.querySelector('[onchange="updateStat(this, \'mental\')"]').value
-            },
-            tags: Array.from(document.querySelectorAll('.theme-tag')).map(tag => 
-                tag.textContent.replace('×', '').trim()
-            )
-        };
-        showNotification('프로필이 저장되었습니다!');
-    }
-
-    // 프로필 불러오기
-    function loadProfile() {
-        if (Object.keys(profileData).length === 0) {
-            showNotification('저장된 프로필이 없습니다!');
-            return;
-        }
-
-        document.getElementById('name').value = profileData.name || '';
-        document.getElementById('age').value = profileData.age || '';
-        document.getElementById('rank').value = profileData.rank || '';
-        document.getElementById('affiliation').value = profileData.affiliation || '';
-        document.getElementById('contractDate').value = profileData.contractDate || '';
-        document.getElementById('mainAttribute').value = profileData.mainAttribute || '';
-        document.getElementById('weapon').value = profileData.weapon || '';
-        document.getElementById('description').value = profileData.description || '';
-
-        // 스탯 로드
-        if (profileData.stats) {
-            Object.keys(profileData.stats).forEach(stat => {
-                const input = document.querySelector(`[onchange="updateStat(this, '${stat}')"]`);
-                if (input) {
-                    input.value = profileData.stats[stat];
-                    updateStat(input, stat);
+            imageContainer.addEventListener('click', () => imageUpload.click());
+            imageUpload.addEventListener('change', event => {
+                const file = event.target.files[0];
+                if (file) {
+                    const reader = new FileReader();
+                    reader.onload = e => {
+                        profileImg.src = e.target.result;
+                    };
+                    reader.readAsDataURL(file);
                 }
             });
-        }
 
-        // 태그 로드
-        if (profileData.tags) {
-            const tagContainer = document.getElementById('themeTags');
-            tagContainer.innerHTML = '';
-            profileData.tags.forEach(tagText => {
-                const tagElement = document.createElement('div');
-                tagElement.className = 'theme-tag';
-                tagElement.innerHTML = tagText + '<button class="remove-tag" onclick="removeTag(this)">×</button>';
-                tagContainer.appendChild(tagElement);
-            });
-        }
+            // 4. 데이터 저장 함수
+            function saveData() {
+                const data = {
+                    name: document.getElementById('char-name').value,
+                    age: document.getElementById('char-age').value,
+                    rank: document.getElementById('char-rank').value,
+                    faction: document.getElementById('char-faction').value,
+                    contractDate: document.getElementById('char-contract-date').value,
+                    description: document.getElementById('char-description').value,
+                    attribute: document.getElementById('magic-attribute').value,
+                    weapon: document.getElementById('magic-weapon').value,
+                    tags: document.getElementById('theme-tags-input').value,
+                    stats: {},
+                    profileImage: profileImg.src,
+                };
+                stats.forEach(stat => {
+                    data.stats[stat] = document.getElementById(`stat-${stat}`).value;
+                });
 
-        showNotification('프로필이 불러와졌습니다!');
-    }
-
-    // 프로필 초기화
-    function resetProfile() {
-        if (confirm('정말로 모든 내용을 초기화하시겠습니까?')) {
-            location.reload();
-        }
-    }
-
-    // 프로필 내보내기 (JSON)
-    function exportProfile() {
-        saveProfile(); // 현재 상태 저장
-        const dataStr = JSON.stringify(profileData, null, 2);
-        const dataBlob = new Blob([dataStr], {type: 'application/json'});
-        const url = URL.createObjectURL(dataBlob);
-        const link = document.createElement('a');
-        link.href = url;
-        link.download = 'magical_girl_profile.json';
-        link.click();
-        URL.revokeObjectURL(url);
-        showNotification('JSON 파일이 내보내졌습니다!');
-    }
-
-    // 이미지로 내보내기
-    async function exportAsImage() {
-        const overlay = document.getElementById('exportOverlay');
-        overlay.style.display = 'flex';
-        
-        try {
-            // 임시로 컨트롤 버튼들을 숨김
-            const controls = document.querySelector('.controls');
-            const originalDisplay = controls.style.display;
-            controls.style.display = 'none';
-            
-            // 편집 가능한 요소들의 테두리 임시 제거
-            const editableElements = document.querySelectorAll('.editable, .stat-input');
-            const originalStyles = [];
-            editableElements.forEach((el, index) => {
-                originalStyles[index] = el.style.border;
-                el.style.border = 'none';
-                el.style.background = 'transparent';
-            });
-            
-            // 태그 제거 버튼들 숨김
-            const removeButtons = document.querySelectorAll('.remove-tag, .remove-image');
-            removeButtons.forEach(btn => {
-                btn.style.display = 'none';
-            });
-            
-            // 프로필 이미지 업로드 input 숨김
-            const imageInput = document.getElementById('imageUpload');
-            if (imageInput) {
-                imageInput.style.display = 'none';
+                localStorage.setItem('magicalGirlProfile', JSON.stringify(data));
+                alert('프로필이 저장되었습니다!');
             }
-            
-            // html2canvas로 캡처
-            const canvas = await html2canvas(document.querySelector('.container'), {
-                backgroundColor: '#0a0a0a',
-                scale: 2, // 고해상도
-                useCORS: true,
-                allowTaint: true,
-                foreignObjectRendering: true,
-                logging: false,
-                width: 900,
-                height: null,
-                scrollX: 0,
-                scrollY: 0
-            });
-            
-            // 스타일 복원
-            controls.style.display = originalDisplay;
-            editableElements.forEach((el, index) => {
-                el.style.border = originalStyles[index];
-            });
-            removeButtons.forEach(btn => {
-                btn.style.display = '';
-            });
-            if (imageInput) {
-                imageInput.style.display = '';
+
+            // 5. 데이터 불러오기 함수
+            function loadData() {
+                const dataString = localStorage.getItem('magicalGirlProfile');
+                if (dataString) {
+                    const data = JSON.parse(dataString);
+                    document.getElementById('char-name').value = data.name || '';
+                    document.getElementById('char-age').value = data.age || '';
+                    document.getElementById('char-rank').value = data.rank || '';
+                    document.getElementById('char-faction').value = data.faction || '';
+                    document.getElementById('char-contract-date').value = data.contractDate || '';
+                    document.getElementById('char-description').value = data.description || '';
+                    document.getElementById('magic-attribute').value = data.attribute || '';
+                    document.getElementById('magic-weapon').value = data.weapon || '';
+                    document.getElementById('theme-tags-input').value = data.tags || '';
+                    if (data.profileImage) {
+                        profileImg.src = data.profileImage;
+                    }
+                    
+                    stats.forEach(stat => {
+                        document.getElementById(`stat-${stat}`).value = data.stats[stat] || 0;
+                    });
+                }
+                // 불러온 데이터로 UI 업데이트
+                stats.forEach(updateStat);
+                updateThemeTags();
             }
-            
-            // 이미지 다운로드
-            const link = document.createElement('a');
-            link.download = `magical_girl_profile_${Date.now()}.png`;
-            link.href = canvas.toDataURL('image/png');
-            link.click();
-            
-            showNotification('프로필 이미지가 저장되었습니다!');
-            
-        } catch (error) {
-            console.error('이미지 내보내기 실패:', error);
-            showNotification('이미지 내보내기에 실패했습니다.');
-        }
-        
-        overlay.style.display = 'none';
-    }
 
-    // 알림 표시
-    function showNotification(message) {
-        const notification = document.getElementById('notification');
-        notification.textContent = message;
-        notification.classList.add('show');
-        setTimeout(() => {
-            notification.classList.remove('show');
-        }, 3000);
-    }
+            // 6. 데이터 초기화 함수
+            function resetData() {
+                if(confirm('정말로 모든 데이터를 초기화하시겠습니까? 저장된 내용이 사라집니다.')) {
+                    localStorage.removeItem('magicalGirlProfile');
+                    location.reload();
+                }
+            }
 
-    // 페이지 로드 시 스탯 애니메이션
-    document.addEventListener('DOMContentLoaded', function() {
-        const statFills = document.querySelectorAll('.stat-fill');
-        statFills.forEach(fill => {
-            const width = fill.style.width;
-            fill.style.width = '0%';
-            setTimeout(() => {
-                fill.style.width = width;
-            }, 500);
+            // 이벤트 리스너 연결
+            stats.forEach(stat => {
+                document.getElementById(`stat-${stat}`).addEventListener('input', () => updateStat(stat));
+            });
+            document.getElementById('theme-tags-input').addEventListener('input', updateThemeTags);
+            document.getElementById('save-button').addEventListener('click', saveData);
+            document.getElementById('reset-button').addEventListener('click', resetData);
+
+            // 페이지 로드 시 데이터 불러오기
+            loadData();
         });
-    });
-
-    // 편집 가능한 요소들에 대한 상호작용
-    document.querySelectorAll('.editable').forEach(element => {
-        element.addEventListener('focus', function() {
-            this.style.background = '#222';
-        });
-        
-        element.addEventListener('blur', function() {
-            this.style.background = 'transparent';
-        });
-    });
-</script>
-```
-
+    </script>
 </body>
 </html>
