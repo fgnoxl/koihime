@@ -151,10 +151,13 @@
             <div class="button-container">
                 <button id="save-button" class="button">저장</button>
                 <button id="reset-button" class="button">초기화</button>
+                <button id="download-button" class="button">이미지로 저장</button>
             </div>
         </div>
     </div>
   
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             const stats = ['aptitude', 'attack', 'defense', 'mana', 'agility', 'spirit'];
@@ -265,9 +268,6 @@
             }
 
             // 이벤트 리스너 연결
-                        // ... 기존 스크립트 코드 ...
-
-            // 이벤트 리스너 연결
             stats.forEach(stat => {
                 document.getElementById(`stat-${stat}`).addEventListener('input', () => updateStat(stat));
             });
@@ -275,7 +275,7 @@
             document.getElementById('save-button').addEventListener('click', saveData);
             document.getElementById('reset-button').addEventListener('click', resetData);
 
-            // ✅ 3. 이미지 저장 기능 추가
+            // --- 추가된 코드: 이미지 저장 기능 ---
             document.getElementById('download-button').addEventListener('click', function() {
                 const profileContainer = document.querySelector('.container');
                 const charName = document.getElementById('char-name').value || 'magical-girl';
@@ -302,7 +302,6 @@
                     button.disabled = false;
                 });
             });
-
 
             // 페이지 로드 시 데이터 불러오기
             loadData();
