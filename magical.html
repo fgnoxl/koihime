@@ -265,12 +265,44 @@
             }
 
             // 이벤트 리스너 연결
+                        // ... 기존 스크립트 코드 ...
+
+            // 이벤트 리스너 연결
             stats.forEach(stat => {
                 document.getElementById(`stat-${stat}`).addEventListener('input', () => updateStat(stat));
             });
             document.getElementById('theme-tags-input').addEventListener('input', updateThemeTags);
             document.getElementById('save-button').addEventListener('click', saveData);
             document.getElementById('reset-button').addEventListener('click', resetData);
+
+            // ✅ 3. 이미지 저장 기능 추가
+            document.getElementById('download-button').addEventListener('click', function() {
+                const profileContainer = document.querySelector('.container');
+                const charName = document.getElementById('char-name').value || 'magical-girl';
+                const button = this;
+                
+                button.textContent = '생성 중...';
+                button.disabled = true;
+
+                html2canvas(profileContainer, { 
+                    backgroundColor: '#0a0a0a', // 배경색 지정
+                    useCORS: true // 프로필 이미지가 외부 URL일 경우를 대비
+                }).then(canvas => {
+                    const link = document.createElement('a');
+                    link.download = `${charName}-profile.png`;
+                    link.href = canvas.toDataURL('image/png');
+                    link.click();
+
+                    button.textContent = '이미지로 저장';
+                    button.disabled = false;
+                }).catch(err => {
+                    console.error('이미지 생성 오류!', err);
+                    alert('이미지 생성에 실패했습니다.');
+                    button.textContent = '이미지로 저장';
+                    button.disabled = false;
+                });
+            });
+
 
             // 페이지 로드 시 데이터 불러오기
             loadData();
